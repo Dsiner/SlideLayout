@@ -1,28 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical"
-    android:padding="@dimen/dimens_padding">
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="vertical">
 
     <!--just contain two view-->
     <com.d.lib.slidelayout.SlideLayout
         android:id="@+id/sl_slide"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="@dimen/dimens_padding">
+        android:layout_height="65dp">
 
         <!--content view-->
-        <TextView
-            android:id="@+id/tv_content"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/colorAccent"
             android:gravity="center_vertical"
-            android:paddingLeft="@dimen/dimens_padding"
-            android:text="CONTENT"
-            android:textColor="@color/colorBlack"
-            android:textSize="14dp" />
+            android:orientation="horizontal">
+
+            <ImageView
+                android:layout_width="45dp"
+                android:layout_height="45dp"
+                android:layout_marginLeft="@dimen/dimens_padding"
+                android:layout_marginRight="@dimen/dimens_padding"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/tv_content"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:text="CONTENT"
+                android:textColor="@color/colorBlack"
+                android:textSize="14dp" />
+        </LinearLayout>
+
 
         <!--slide view-->
         <LinearLayout
@@ -34,29 +46,26 @@
                 android:id="@+id/tv_stick"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:background="@color/colorYellow"
+                android:background="#C7C7CD"
                 android:gravity="center"
                 android:text="STICK"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorWhite"
                 android:textSize="14dp" />
 
             <TextView
                 android:id="@+id/tv_delete"
                 android:layout_width="80dp"
                 android:layout_height="match_parent"
-                android:background="@color/colorBlue"
+                android:background="#FF3A30"
                 android:gravity="center"
                 android:text="DELETE"
-                android:textColor="@color/colorBlack"
+                android:textColor="@color/colorWhite"
                 android:textSize="14dp" />
         </LinearLayout>
-
     </com.d.lib.slidelayout.SlideLayout>
 
-    <Button
-        android:id="@+id/btn_list"
+    <View
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimens_padding"
-        android:text="LIST" />
+        android:layout_height="1px"
+        android:background="#e3e4e5" />
 </LinearLayout>
