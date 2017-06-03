@@ -6,10 +6,10 @@ import android.widget.Toast;
 
 import com.d.lib.slidelayout.SlideLayout;
 import com.d.lib.slidelayout.SlideManager;
+import com.d.lib.xrv.adapter.CommonAdapter;
+import com.d.lib.xrv.adapter.CommonHolder;
 import com.d.slidelayout.R;
 import com.d.slidelayout.bean.Bean;
-import com.d.xrv.adapter.CommonAdapter;
-import com.d.xrv.adapter.CommonHolder;
 
 import java.util.List;
 
