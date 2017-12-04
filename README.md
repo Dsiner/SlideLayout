@@ -4,7 +4,7 @@
 [ ![Download](https://api.bintray.com/packages/dsiner/maven/slidelayout/images/download.svg) ](https://bintray.com/dsiner/maven/slidelayout/_latestVersion)
 
 ## Demo
-![](https://github.com/Dsiner/Resouce/blob/master/lib/SlideLayout/slidelayout.gif)<br/>
+<img src="https://github.com/Dsiner/Resouce/blob/master/lib/SlideLayout/slidelayout.gif" width="320" alt="Screenshot"/>
 <img src="https://github.com/Dsiner/Resouce/blob/master/lib/SlideLayout/slidelayout01.gif" width="320" alt="Screenshot"/>
 
 ## Setup
