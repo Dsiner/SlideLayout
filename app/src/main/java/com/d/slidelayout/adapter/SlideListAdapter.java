@@ -67,7 +67,7 @@ public class SlideListAdapter extends CommonAdapter<Bean> {
                     slSlide.close();
                     return;
                 }
-                Toast.makeText(mContext, "clicke:" + position, Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, "onClick: " + position, Toast.LENGTH_SHORT).show();
             }
         });
     }
