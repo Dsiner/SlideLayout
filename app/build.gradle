@@ -30,5 +30,5 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile project(':lib')
     compile 'com.android.support:appcompat-v7:25.3.1'
-    compile 'com.dsiner.lib:xrv:1.1.0'
+    compile 'com.dsiner.lib:xrv:1.1.1'
 }
