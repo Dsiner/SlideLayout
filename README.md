@@ -63,6 +63,12 @@ compile 'com.dsiner.lib:slidelayout:1.0.1'
         });
 ```
 
+#### Parameter
+| Attrs        | Type           | Function  |
+| ------------- |:-------------:| -----:|
+| sl_slideSlop      | dimension | slop |
+| sl_duration      | integer      |   duration |
+
 More usage see [Demo](app/src/main/java/com/d/slidelayout/MainActivity.java)
 
 ## Licence

@@ -73,13 +73,6 @@ public class SlideLayout extends ViewGroup {
 
     @Override
     protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
-        if (false) {
-            if (lp instanceof LayoutParams) {
-                return new LayoutParams((LayoutParams) lp);
-            } else if (lp instanceof MarginLayoutParams) {
-                return new LayoutParams((MarginLayoutParams) lp);
-            }
-        }
         return new LayoutParams(lp);
     }
 
@@ -91,23 +84,8 @@ public class SlideLayout extends ViewGroup {
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         int count = getChildCount();
-
         final boolean measureMatchParentChildren = MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.EXACTLY ||
                 MeasureSpec.getMode(heightMeasureSpec) != MeasureSpec.EXACTLY;
-
-        if (!measureMatchParentChildren) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-            width = MeasureSpec.getSize(widthMeasureSpec);
-            height = MeasureSpec.getSize(heightMeasureSpec);
-            for (int i = 0; i < count; i++) {
-                View child = getChildAt(i);
-                // Measure size for each child view in the ViewGroup
-                measureChild(child, widthMeasureSpec, heightMeasureSpec);
-            }
-            setMeasuredDimension(width, height);
-            return;
-        }
-
         mMatchParentChildren.clear();
 
         int maxHeight = 0;

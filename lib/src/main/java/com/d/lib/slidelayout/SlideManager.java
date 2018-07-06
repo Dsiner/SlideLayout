@@ -31,7 +31,7 @@ public class SlideManager {
             SlideLayout slide = slides.get(i);
             if (slide != null && slide != layout) {
                 slide.close();
-                slides.remove(slide);//unnecessary
+                slides.remove(slide); // unnecessary
                 ret = true;
                 i--;
             }
