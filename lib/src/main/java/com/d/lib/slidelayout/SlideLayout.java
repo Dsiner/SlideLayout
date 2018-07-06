@@ -29,8 +29,12 @@ public class SlideLayout extends ViewGroup {
     private int touchSlop;
     private int slideSlop;
     private int duration;
-    private float dX, dY;//TouchEvent_ACTION_DOWN坐标(dX,dY)
-    private float lastX;//TouchEvent最后一次坐标(lastX,lastY)
+
+    // TouchEvent_ACTION_DOWN coordinates (dX, dY)
+    private float dX, dY;
+
+    // TouchEvent last coordinate (lastX, lastY)
+    private float lastX;
     private boolean isMoveValid;
     private boolean isOpen;
     private OnStateChangeListener listener;
@@ -97,7 +101,7 @@ public class SlideLayout extends ViewGroup {
             height = MeasureSpec.getSize(heightMeasureSpec);
             for (int i = 0; i < count; i++) {
                 View child = getChildAt(i);
-                //为ViewGroup中的每一个子控件测量大小
+                // Measure size for each child view in the ViewGroup
                 measureChild(child, widthMeasureSpec, heightMeasureSpec);
             }
             setMeasuredDimension(width, height);
@@ -194,20 +198,41 @@ public class SlideLayout extends ViewGroup {
 
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
-        int count = getChildCount();
-        if (changed && count > 0) {
-            int left = 0, top = 0;
-            for (int i = 0; i < count; i++) {
-                View child = getChildAt(i);
-                //为ViewGroup中的每一个子控件在水平方向上进行布局
-                int childWidth = child.getMeasuredWidth();
-                child.layout(left, top, left + childWidth, child.getMeasuredHeight());
-                left += childWidth;
-            }
-            //初始化左右边界值
-            leftBorder = getChildAt(0).getLeft();
-            rightBorder = getChildAt(count - 1).getRight();
+        final int count = getChildCount();
+        if (!changed || count <= 0) {
+            return;
         }
+
+        final int parentLeft = getPaddingLeft();
+        final int parentRight = r - l - getPaddingRight();
+
+        final int parentTop = getPaddingTop();
+        final int parentBottom = b - t - getPaddingBottom();
+
+        int left = 0, top = 0;
+        for (int i = 0; i < count; i++) {
+            final View child = getChildAt(i);
+            if (child.getVisibility() != GONE) {
+                final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+
+                final int width = child.getMeasuredWidth();
+                final int height = child.getMeasuredHeight();
+
+                int childLeft;
+                int childTop;
+
+                childTop = parentTop + lp.topMargin;
+                childLeft = parentLeft + lp.leftMargin;
+
+                // Layout horizontally for each child view in the ViewGroup
+                child.layout(left + childLeft, childTop, left + childLeft + width, childTop + height);
+
+                left += childLeft + width + lp.rightMargin + getPaddingRight();
+            }
+        }
+        // Initialize left and right boundary values
+        leftBorder = getChildAt(0).getLeft();
+        rightBorder = getChildAt(count - 1).getRight();
     }
 
     @Override
@@ -232,7 +257,7 @@ public class SlideLayout extends ViewGroup {
         if (ev.getAction() == MotionEvent.ACTION_MOVE) {
             final float eX = ev.getRawX();
             final float eY = ev.getRawY();
-            //当横向ACTION_MOVE值大于TouchSlop时，拦截子控件的事件
+            // Intercept child event when horizontal ACTION_MOVE value is greater than TouchSlop
             if (Math.abs(eX - dX) > touchSlop && Math.abs(eX - dX) > Math.abs(eY - dY)) {
                 return true;
             }
@@ -247,7 +272,7 @@ public class SlideLayout extends ViewGroup {
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
                 if (!isMoveValid && Math.abs(eX - dX) > touchSlop && Math.abs(eX - dX) > Math.abs(eY - dY)) {
-                    //禁止父控件拦截事件
+                    // Disable parent view interception events
                     requestDisallowInterceptTouchEvent(true);
                     isMoveValid = true;
                 }
@@ -256,10 +281,10 @@ public class SlideLayout extends ViewGroup {
                     lastX = eX;
                     if (getScrollX() + offset < 0) {
                         toggle(false, false);
-                        dX = eX;//reset eX
+                        dX = eX; // reset eX
                     } else if (getScrollX() + offset > rightBorder - width) {
                         toggle(true, false);
-                        dX = eX;//reset eX
+                        dX = eX; // reset eX
                     } else {
                         scrollBy(offset, 0);
                     }
@@ -322,6 +347,12 @@ public class SlideLayout extends ViewGroup {
         return isOpen;
     }
 
+    /**
+     * Open or close
+     *
+     * @param open     Open or close
+     * @param withAnim Whether animation
+     */
     public void setOpen(boolean open, boolean withAnim) {
         toggle(open, withAnim);
     }
@@ -335,13 +366,14 @@ public class SlideLayout extends ViewGroup {
     }
 
     public interface OnStateChangeListener {
+
         void onChange(SlideLayout layout, boolean isOpen);
 
         /**
-         * 关闭所有未关闭的Slide
+         * Close all slides that are not closed
          *
          * @param layout this
-         * @return true:存在未关闭Slide; false:不存在未关闭Slide
+         * @return true: there is a slide that is not closed; false: there is no slide that is not closed
          */
         boolean closeAll(SlideLayout layout);
     }
