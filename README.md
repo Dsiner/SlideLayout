@@ -71,6 +71,9 @@ compile 'com.dsiner.lib:slidelayout:1.0.2'
 
 More usage see [Demo](app/src/main/java/com/d/slidelayout/MainActivity.java)
 
+## Latest Changes
+- [Changelog.md](CHANGELOG.md)
+
 ## Licence
 
 ```txt
