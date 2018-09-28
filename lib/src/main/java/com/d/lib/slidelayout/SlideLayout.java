@@ -259,10 +259,10 @@ public class SlideLayout extends ViewGroup {
                     lastX = eX;
                     if (getScrollX() + offset < 0) {
                         toggle(false, false);
-                        dX = eX; // reset eX
+                        dX = eX; // Reset eX
                     } else if (getScrollX() + offset > rightBorder - width) {
                         toggle(true, false);
-                        dX = eX; // reset eX
+                        dX = eX; // Reset eX
                     } else {
                         scrollBy(offset, 0);
                     }
