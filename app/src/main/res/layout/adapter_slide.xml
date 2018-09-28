@@ -21,8 +21,8 @@
             <ImageView
                 android:layout_width="45dp"
                 android:layout_height="45dp"
-                android:layout_marginLeft="@dimen/dimens_padding"
-                android:layout_marginRight="@dimen/dimens_padding"
+                android:layout_marginLeft="@dimen/dimens_margin"
+                android:layout_marginRight="@dimen/dimens_margin"
                 android:src="@mipmap/ic_launcher" />
 
             <TextView

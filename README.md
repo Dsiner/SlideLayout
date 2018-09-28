@@ -24,17 +24,17 @@ compile 'com.dsiner.lib:slidelayout:1.0.2'
 
 ## Usage
 ```xml
-    <!--just contain two view-->
+    <!-- Just contain two view -->
     <com.d.lib.slidelayout.SlideLayout
         android:layout_width="match_parent"
         android:layout_height="65dp">
 
-        <!--content view-->
+        <!-- Content view -->
         <View
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <!--slide view-->
+        <!-- Slide view -->
         <View
             android:layout_width="wrap_content"
             android:layout_height="match_parent" />
@@ -51,7 +51,7 @@ compile 'com.dsiner.lib:slidelayout:1.0.2'
 
 #### SetListener
 ```java
-        slideLayout.setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {
+        setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {
             @Override
             public void onChange(SlideLayout layout, boolean isOpen) {
             }

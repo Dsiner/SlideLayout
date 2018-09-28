@@ -1,9 +1,10 @@
-package com.d.slidelayout;
+package com.d.slidelayout.activity;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 
 import com.d.lib.xrv.LRecyclerView;
+import com.d.slidelayout.R;
 import com.d.slidelayout.adapter.SlideListAdapter;
 import com.d.slidelayout.bean.Bean;
 

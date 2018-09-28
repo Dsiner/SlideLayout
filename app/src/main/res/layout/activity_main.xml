@@ -3,60 +3,19 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    android:padding="@dimen/dimens_padding">
+    android:padding="@dimen/dimens_margin">
 
-    <!--just contain two view-->
-    <com.d.lib.slidelayout.SlideLayout
-        android:id="@+id/sl_slide"
+    <Button
+        android:id="@+id/btn_simple"
         android:layout_width="match_parent"
-        android:layout_height="65dp"
-        android:layout_marginTop="@dimen/dimens_padding">
-
-        <!--content view-->
-        <TextView
-            android:id="@+id/tv_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorAccent"
-            android:gravity="center_vertical"
-            android:paddingLeft="@dimen/dimens_padding"
-            android:text="CONTENT"
-            android:textColor="@color/colorBlack"
-            android:textSize="14dp" />
-
-        <!--slide view-->
-        <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/tv_stick"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorYellow"
-                android:gravity="center"
-                android:text="STICK"
-                android:textColor="@color/colorBlack"
-                android:textSize="14dp" />
-
-            <TextView
-                android:id="@+id/tv_delete"
-                android:layout_width="80dp"
-                android:layout_height="match_parent"
-                android:background="@color/colorBlue"
-                android:gravity="center"
-                android:text="DELETE"
-                android:textColor="@color/colorBlack"
-                android:textSize="14dp" />
-        </LinearLayout>
-
-    </com.d.lib.slidelayout.SlideLayout>
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dimens_margin"
+        android:text="SIMPLE" />
 
     <Button
         android:id="@+id/btn_list"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dimens_padding"
+        android:layout_marginTop="@dimen/dimens_margin"
         android:text="LIST" />
 </LinearLayout>
