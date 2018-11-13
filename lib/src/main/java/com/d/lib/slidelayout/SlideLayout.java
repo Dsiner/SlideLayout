@@ -37,6 +37,7 @@ public class SlideLayout extends ViewGroup {
     private float lastX;
     private boolean isMoveValid;
     private boolean isOpen;
+    private boolean isEnable;
     private OnStateChangeListener listener;
 
     public SlideLayout(Context context) {
@@ -58,12 +59,21 @@ public class SlideLayout extends ViewGroup {
         slideSlop = (int) typedArray.getDimension(R.styleable.SlideLayout_sl_slideSlop,
                 TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics()));
         duration = typedArray.getInteger(R.styleable.SlideLayout_sl_duration, 250);
+        isEnable = typedArray.getBoolean(R.styleable.SlideLayout_sl_enable, true);
         typedArray.recycle();
     }
 
     private void init(Context context) {
         scroller = new Scroller(context);
         touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+    }
+
+    public void setEnable(Boolean isEnable) {
+        this.isEnable = isEnable;
+    }
+
+    public boolean isEnable() {
+        return isEnable;
     }
 
     @Override
@@ -245,6 +255,9 @@ public class SlideLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
+        if(!isEnable){
+            return super.onTouchEvent(event);
+        }
         final float eX = event.getRawX();
         final float eY = event.getRawY();
         switch (event.getAction()) {
