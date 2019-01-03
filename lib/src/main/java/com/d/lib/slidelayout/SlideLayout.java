@@ -19,26 +19,26 @@ import java.util.ArrayList;
  * Created by D on 2017/5/19.
  */
 public class SlideLayout extends ViewGroup {
-    private int width;
-    private int height;
+    private int mWidth;
+    private int mHeight;
 
     private final ArrayList<View> mMatchParentChildren = new ArrayList<>(1);
-    private Scroller scroller;
-    private int leftBorder;
-    private int rightBorder;
-    private int touchSlop;
-    private int slideSlop;
-    private int duration;
+    private Scroller mScroller;
+    private int mLeftBorder;
+    private int mRightBorder;
+    private int mTouchSlop;
+    private int mSlideSlop;
+    private int mDuration;
 
     // TouchEvent_ACTION_DOWN coordinates (dX, dY)
-    private float dX, dY;
+    private float mDX, mDY;
 
     // TouchEvent last coordinate (lastX, lastY)
-    private float lastX;
-    private boolean isMoveValid;
-    private boolean isOpen;
-    private boolean isEnable;
-    private OnStateChangeListener listener;
+    private float mLastX;
+    private boolean mIsMoveValid;
+    private boolean mIsOpen;
+    private boolean mIsEnable;
+    private OnStateChangeListener mListener;
 
     public SlideLayout(Context context) {
         this(context, null);
@@ -56,25 +56,18 @@ public class SlideLayout extends ViewGroup {
 
     private void initTypedArray(Context context, AttributeSet attrs) {
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.SlideLayout);
-        slideSlop = (int) typedArray.getDimension(R.styleable.SlideLayout_sl_slideSlop,
+        mSlideSlop = (int) typedArray.getDimension(R.styleable.SlideLayout_sl_slideSlop,
                 TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 45, getResources().getDisplayMetrics()));
-        duration = typedArray.getInteger(R.styleable.SlideLayout_sl_duration, 250);
-        isEnable = typedArray.getBoolean(R.styleable.SlideLayout_sl_enable, true);
+        mDuration = typedArray.getInteger(R.styleable.SlideLayout_sl_duration, 250);
+        mIsEnable = typedArray.getBoolean(R.styleable.SlideLayout_sl_enable, true);
         typedArray.recycle();
     }
 
     private void init(Context context) {
-        scroller = new Scroller(context);
-        touchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
+        mScroller = new Scroller(context);
+        mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
     }
 
-    public void setEnable(Boolean isEnable) {
-        this.isEnable = isEnable;
-    }
-
-    public boolean isEnable() {
-        return isEnable;
-    }
 
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
@@ -143,7 +136,7 @@ public class SlideLayout extends ViewGroup {
                     resolveSizeAndState(maxHeight, heightMeasureSpec,
                             childState << MEASURED_HEIGHT_STATE_SHIFT));
         } else {
-            setMeasuredDimension(width, height);
+            setMeasuredDimension(mWidth, mHeight);
         }
 
         count = mMatchParentChildren.size();
@@ -180,8 +173,8 @@ public class SlideLayout extends ViewGroup {
             }
         }
 
-        width = getMeasuredWidth();
-        height = getMeasuredHeight();
+        mWidth = getMeasuredWidth();
+        mHeight = getMeasuredHeight();
     }
 
     @Override
@@ -219,20 +212,20 @@ public class SlideLayout extends ViewGroup {
             }
         }
         // Initialize left and right boundary values
-        leftBorder = getChildAt(0).getLeft();
-        rightBorder = getChildAt(count - 1).getRight();
+        mLeftBorder = getChildAt(0).getLeft();
+        mRightBorder = getChildAt(count - 1).getRight();
     }
 
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            if (listener != null && listener.closeAll(this)) {
+            if (mListener != null && mListener.closeAll(this)) {
                 return false;
             } else {
                 final float eX = ev.getRawX();
                 final float eY = ev.getRawY();
-                lastX = dX = eX;
-                dY = eY;
+                mLastX = mDX = eX;
+                mDY = eY;
                 super.dispatchTouchEvent(ev);
                 return true;
             }
@@ -246,7 +239,7 @@ public class SlideLayout extends ViewGroup {
             final float eX = ev.getRawX();
             final float eY = ev.getRawY();
             // Intercept child event when horizontal ACTION_MOVE value is greater than TouchSlop
-            if (Math.abs(eX - dX) > touchSlop && Math.abs(eX - dX) > Math.abs(eY - dY)) {
+            if (Math.abs(eX - mDX) > mTouchSlop && Math.abs(eX - mDX) > Math.abs(eY - mDY)) {
                 return true;
             }
         }
@@ -255,27 +248,27 @@ public class SlideLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if (!isEnable) {
+        if (!mIsEnable) {
             return super.onTouchEvent(event);
         }
         final float eX = event.getRawX();
         final float eY = event.getRawY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                if (!isMoveValid && Math.abs(eX - dX) > touchSlop && Math.abs(eX - dX) > Math.abs(eY - dY)) {
+                if (!mIsMoveValid && Math.abs(eX - mDX) > mTouchSlop && Math.abs(eX - mDX) > Math.abs(eY - mDY)) {
                     // Disable parent view interception events
                     requestDisallowInterceptTouchEvent(true);
-                    isMoveValid = true;
+                    mIsMoveValid = true;
                 }
-                if (isMoveValid) {
-                    int offset = (int) (lastX - eX);
-                    lastX = eX;
+                if (mIsMoveValid) {
+                    int offset = (int) (mLastX - eX);
+                    mLastX = eX;
                     if (getScrollX() + offset < 0) {
                         toggle(false, false);
-                        dX = eX; // Reset eX
-                    } else if (getScrollX() + offset > rightBorder - width) {
+                        mDX = eX; // Reset eX
+                    } else if (getScrollX() + offset > mRightBorder - mWidth) {
                         toggle(true, false);
-                        dX = eX; // Reset eX
+                        mDX = eX; // Reset eX
                     } else {
                         scrollBy(offset, 0);
                     }
@@ -284,15 +277,15 @@ public class SlideLayout extends ViewGroup {
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (isMoveValid) {
-                    if (eX - dX < -slideSlop) {
+                if (mIsMoveValid) {
+                    if (eX - mDX < -mSlideSlop) {
                         toggle(true, true);
-                    } else if (eX - dX > slideSlop) {
+                    } else if (eX - mDX > mSlideSlop) {
                         toggle(false, true);
                     } else {
-                        toggle(isOpen, true);
+                        toggle(mIsOpen, true);
                     }
-                    isMoveValid = false;
+                    mIsMoveValid = false;
                     return true;
                 }
                 break;
@@ -301,19 +294,19 @@ public class SlideLayout extends ViewGroup {
     }
 
     private void toggle(boolean open, boolean withAnim) {
-        if (isOpen != open && listener != null) {
-            listener.onChange(this, open);
+        if (mIsOpen != open && mListener != null) {
+            mListener.onChange(this, open);
         }
-        isOpen = open;
-        if (isOpen) {
+        mIsOpen = open;
+        if (mIsOpen) {
             if (withAnim) {
-                smoothScrollTo(rightBorder - width, duration);
+                smoothScrollTo(mRightBorder - mWidth, mDuration);
             } else {
-                scrollTo(rightBorder - width, 0);
+                scrollTo(mRightBorder - mWidth, 0);
             }
         } else {
             if (withAnim) {
-                smoothScrollTo(0, duration);
+                smoothScrollTo(0, mDuration);
             } else {
                 scrollTo(0, 0);
             }
@@ -322,20 +315,28 @@ public class SlideLayout extends ViewGroup {
 
     private void smoothScrollTo(int dstX, int duration) {
         int offset = dstX - getScrollX();
-        scroller.startScroll(getScrollX(), 0, offset, 0, duration);
+        mScroller.startScroll(getScrollX(), 0, offset, 0, duration);
         invalidate();
     }
 
     @Override
     public void computeScroll() {
-        if (scroller.computeScrollOffset()) {
-            scrollTo(scroller.getCurrX(), scroller.getCurrY());
+        if (mScroller.computeScrollOffset()) {
+            scrollTo(mScroller.getCurrX(), mScroller.getCurrY());
             invalidate();
         }
     }
 
+    public void setEnable(Boolean isEnable) {
+        this.mIsEnable = isEnable;
+    }
+
+    public boolean isEnable() {
+        return mIsEnable;
+    }
+
     public boolean isOpen() {
-        return isOpen;
+        return mIsOpen;
     }
 
     /**
@@ -363,14 +364,14 @@ public class SlideLayout extends ViewGroup {
         /**
          * Close all slides that are not closed
          *
-         * @param layout this
-         * @return true: there is a slide that is not closed; false: there is no slide that is not closed
+         * @param layout This layout
+         * @return True if there is a slide that is not closed; False if there is no slide that is not closed
          */
         boolean closeAll(SlideLayout layout);
     }
 
     public void setOnStateChangeListener(OnStateChangeListener listener) {
-        this.listener = listener;
+        this.mListener = listener;
     }
 
     public static class LayoutParams extends MarginLayoutParams {
