@@ -187,7 +187,7 @@ public class SlideLayout extends ViewGroup {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         final int count = getChildCount();
-        if (!changed || count <= 0) {
+        if (count <= 0) {
             return;
         }
 
@@ -255,7 +255,7 @@ public class SlideLayout extends ViewGroup {
 
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        if(!isEnable){
+        if (!isEnable) {
             return super.onTouchEvent(event);
         }
         final float eX = event.getRawX();
