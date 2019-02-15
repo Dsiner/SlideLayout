@@ -14,12 +14,12 @@ Maven:
 <dependency>
   <groupId>com.dsiner.lib</groupId>
   <artifactId>slidelayout</artifactId>
-  <version>1.0.2</version>
+  <version>1.0.3</version>
 </dependency>
 ```
 or Gradle:
 ```groovy
-compile 'com.dsiner.lib:slidelayout:1.0.2'
+compile 'com.dsiner.lib:slidelayout:1.0.3'
 ```
 
 ## Usage
@@ -51,7 +51,7 @@ compile 'com.dsiner.lib:slidelayout:1.0.2'
         boolean isEnable()
 ```
 
-#### SetListener
+#### Set listener
 ```java
         setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {
             @Override
@@ -68,9 +68,9 @@ compile 'com.dsiner.lib:slidelayout:1.0.2'
 #### Parameter
 | Attrs        | Type           | Function  |
 | ------------- |:-------------:| -----:|
-| sl_slideSlop      | dimension | slop |
-| sl_duration      | integer      |   duration |
-| sl_enable      | boolean      |   enable |
+| sl_slideSlop      | Dimension | Slop |
+| sl_duration      | Integer      |   Duration |
+| sl_enable      | Boolean      |   Enable |
 
 More usage see [Demo](app/src/main/java/com/d/slidelayout/MainActivity.java)
 

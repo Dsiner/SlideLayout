@@ -1,8 +1,9 @@
 Changelog
 --------------------------------
 
-Version: Latest
+Version: 1.0.2
 --------------------------------
+- Fix issues #4
 - Gradle: upgrade to 4.4
 
 Version: 1.0.2
