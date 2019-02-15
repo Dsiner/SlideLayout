@@ -8,30 +8,30 @@ import java.util.List;
  * Created by D on 2017/5/30.
  */
 public class SlideManager {
-    private List<SlideLayout> slides;
+    private List<SlideLayout> mSlides;
 
     public SlideManager() {
-        slides = new ArrayList<>();
+        mSlides = new ArrayList<>();
     }
 
     public void onChange(SlideLayout layout, boolean isOpen) {
         if (isOpen) {
-            slides.add(layout);
+            mSlides.add(layout);
         } else {
-            slides.remove(layout);
+            mSlides.remove(layout);
         }
     }
 
     public boolean closeAll(SlideLayout layout) {
         boolean ret = false;
-        if (slides.size() <= 0) {
+        if (mSlides.size() <= 0) {
             return false;
         }
-        for (int i = 0; i < slides.size(); i++) {
-            SlideLayout slide = slides.get(i);
+        for (int i = 0; i < mSlides.size(); i++) {
+            SlideLayout slide = mSlides.get(i);
             if (slide != null && slide != layout) {
                 slide.close();
-                slides.remove(slide); // Unnecessary
+                mSlides.remove(slide); // Unnecessary
                 ret = true;
                 i--;
             }

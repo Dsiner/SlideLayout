@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "com.d.slidelayout"
         minSdkVersion 14
-        targetSdkVersion 22
+        targetSdkVersion 27
         versionCode 1
         versionName "1.0"
 
