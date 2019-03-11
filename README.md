@@ -1,3 +1,9 @@
+<p align="center">
+  <img src="/app/src/SL Logotype.png" width="480"/>
+</p>
+
+#
+
 # SlideLayout for Android
 
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
