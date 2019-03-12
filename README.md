@@ -1,14 +1,10 @@
-<p align="center">
-  <img src="/app/src/SL Logotype.png" width="480"/>
-</p>
-
-#
-
 # SlideLayout for Android
 
 [![License](https://img.shields.io/badge/license-Apache%202-green.svg)](https://www.apache.org/licenses/LICENSE-2.0)
 [![API](https://img.shields.io/badge/API-9%2B-green.svg?style=flat)](https://android-arsenal.com/api?level=9)
 [![Download](https://api.bintray.com/packages/dsiner/maven/slidelayout/images/download.svg) ](https://bintray.com/dsiner/maven/slidelayout/_latestVersion)
+
+<a href="https://github.com/Dsiner/SlideLayout" target="_blank"><p align="center"><img src="https://github.com/Dsiner/SlideLayout/blob/master/logo/SL_Logotype.png" alt="SlideLayout" height="150px"></p></a>
 
 ## Demo
 <img src="https://github.com/Dsiner/Resouce/blob/master/lib/SlideLayout/slidelayout.gif" width="320" alt="Screenshot"/>
@@ -82,6 +78,9 @@ More usage see [Demo](app/src/main/java/com/d/slidelayout/MainActivity.java)
 
 ## Latest Changes
 - [Changelog.md](CHANGELOG.md)
+
+## Contributors
+- [Tebriz](https://github.com/tebriz159)  - Logo design contribution
 
 ## Licence
 
