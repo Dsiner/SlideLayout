@@ -285,6 +285,8 @@ public class SlideLayout extends ViewGroup {
                         toggle(mIsOpen, true);
                     }
                     mIsMoveValid = false;
+                    event.setAction(MotionEvent.ACTION_CANCEL);
+                    super.onTouchEvent(event);
                     return true;
                 }
                 break;
