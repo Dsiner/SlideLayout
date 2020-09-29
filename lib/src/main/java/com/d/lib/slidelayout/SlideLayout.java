@@ -219,16 +219,15 @@ public class SlideLayout extends ViewGroup {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            if (mListener != null && mListener.closeAll(this)) {
-                return false;
-            } else {
-                final float eX = ev.getRawX();
-                final float eY = ev.getRawY();
-                mLastX = mDX = eX;
-                mDY = eY;
-                super.dispatchTouchEvent(ev);
-                return true;
+            if (mListener != null) {
+                mListener.closeAll(this);
             }
+            final float eX = ev.getRawX();
+            final float eY = ev.getRawY();
+            mLastX = mDX = eX;
+            mDY = eY;
+            super.dispatchTouchEvent(ev);
+            return true;
         }
         return super.dispatchTouchEvent(ev);
     }
