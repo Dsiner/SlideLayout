@@ -1,26 +1,17 @@
 package com.d.slidelayout;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.mvp.app.BaseActivity;
+import com.d.lib.common.util.ViewHelper;
 import com.d.slidelayout.activity.ListActivity;
 import com.d.slidelayout.activity.SimpleActivity;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        bindView();
-    }
-
-    private void bindView() {
-        findViewById(R.id.btn_simple).setOnClickListener(this);
-        findViewById(R.id.btn_list).setOnClickListener(this);
-    }
+public class MainActivity extends BaseActivity<MvpBasePresenter>
+        implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
@@ -28,9 +19,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case R.id.btn_simple:
                 startActivity(new Intent(MainActivity.this, SimpleActivity.class));
                 break;
+
             case R.id.btn_list:
                 startActivity(new Intent(MainActivity.this, ListActivity.class));
                 break;
         }
+    }
+
+    @Override
+    protected int getLayoutRes() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    public MvpBasePresenter getPresenter() {
+        return new MvpBasePresenter(getApplicationContext());
+    }
+
+    @Override
+    protected MvpView getMvpView() {
+        return this;
+    }
+
+    @Override
+    protected void bindView() {
+        ViewHelper.setOnClickListener(this, this,
+                R.id.btn_simple,
+                R.id.btn_list
+        );
+    }
+
+    @Override
+    protected void init() {
     }
 }

@@ -1,9 +1,11 @@
 package com.d.slidelayout.activity;
 
-import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 
-import com.d.lib.xrv.LRecyclerView;
+import com.d.lib.common.component.mvp.MvpBasePresenter;
+import com.d.lib.common.component.mvp.MvpView;
+import com.d.lib.common.component.mvp.app.BaseActivity;
 import com.d.slidelayout.R;
 import com.d.slidelayout.adapter.SlideListAdapter;
 import com.d.slidelayout.bean.Bean;
@@ -11,22 +13,44 @@ import com.d.slidelayout.bean.Bean;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ListActivity extends AppCompatActivity {
+public class ListActivity extends BaseActivity<MvpBasePresenter> {
+    private RecyclerView rv_list;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_list);
-        LRecyclerView lrvList = (LRecyclerView) findViewById(R.id.lrv_list);
-        lrvList.setAdapter(new SlideListAdapter(this, getDatas(), R.layout.adapter_slide));
+    protected int getLayoutRes() {
+        return R.layout.activity_list;
+    }
+
+    @Override
+    public MvpBasePresenter getPresenter() {
+        return null;
+    }
+
+    @Override
+    protected MvpView getMvpView() {
+        return null;
+    }
+
+    @Override
+    protected void bindView() {
+        rv_list = (RecyclerView) findViewById(R.id.rv_list);
+    }
+
+    @Override
+    protected void init() {
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
+        SlideListAdapter adapter = new SlideListAdapter(this, getDatas(), R.layout.adapter_slide);
+        rv_list.setLayoutManager(layoutManager);
+        rv_list.setAdapter(adapter);
     }
 
     private List<Bean> getDatas() {
-        List<Bean> datas = new ArrayList<>();
+        List<Bean> list = new ArrayList<>();
         for (int i = 0; i < 20; i++) {
             Bean b = new Bean("" + i, false);
-            datas.add(b);
+            list.add(b);
         }
-        return datas;
+        return list;
     }
 }

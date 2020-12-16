@@ -1,20 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:background="@color/lib_pub_color_bg_main">
+
+    <com.d.lib.common.view.TitleLayout
+        android:id="@+id/tl_title"
+        style="@style/lib_pub_title_style"
+        app:lib_pub_tl_middleText="Simple" />
 
     <!-- Just contain two view -->
     <com.d.lib.slidelayout.SlideLayout
         android:id="@+id/sl_slide"
         android:layout_width="match_parent"
-        android:layout_height="65dp">
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/lib_pub_dimen_title_height">
 
         <!-- Content view -->
         <TextView
             android:id="@+id/tv_content"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="65dp"
             android:background="@color/colorAccent"
             android:gravity="center_vertical"
             android:paddingLeft="@dimen/dimens_margin"
@@ -48,6 +55,5 @@
                 android:textColor="@color/colorBlack"
                 android:textSize="14dp" />
         </LinearLayout>
-
     </com.d.lib.slidelayout.SlideLayout>
-</LinearLayout>
+</FrameLayout>

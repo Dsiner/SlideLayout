@@ -24,7 +24,9 @@ or Gradle:
 compile 'com.dsiner.lib:slidelayout:1.0.3'
 ```
 
-## Usage
+## How do I use it?
+
+### Via XML ###
 ```xml
     <!-- Just contain two view -->
     <com.d.lib.slidelayout.SlideLayout
@@ -43,7 +45,7 @@ compile 'com.dsiner.lib:slidelayout:1.0.3'
     </com.d.lib.slidelayout.SlideLayout>
 ```
 
-#### Operation
+### Operation ###
 ```java
         void open();
         void close();
@@ -53,11 +55,14 @@ compile 'com.dsiner.lib:slidelayout:1.0.3'
         boolean isEnable()
 ```
 
-#### Set listener
+### State change callback ###
+Just implement `SlideLayout.OnStateChangeListener`:
+
 ```java
-        setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {
+        .setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {
             @Override
             public void onChange(SlideLayout layout, boolean isOpen) {
+                ...
             }
 
             @Override
@@ -67,7 +72,7 @@ compile 'com.dsiner.lib:slidelayout:1.0.3'
         });
 ```
 
-#### Parameter
+### Parameter ###
 | Attrs        | Type           | Function  |
 | ------------- |:-------------:| -----:|
 | sl_slideSlop      | Dimension | Slop |
