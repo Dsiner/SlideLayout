@@ -8,10 +8,9 @@ import java.util.List;
  * Created by D on 2017/5/30.
  */
 public class SlideManager {
-    private List<SlideLayout> mSlides;
+    private final List<SlideLayout> mSlides = new ArrayList<>();
 
     public SlideManager() {
-        mSlides = new ArrayList<>();
     }
 
     public void onChange(SlideLayout layout, boolean isOpen) {

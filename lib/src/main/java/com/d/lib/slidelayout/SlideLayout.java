@@ -31,14 +31,14 @@ public class SlideLayout extends ViewGroup {
     private int mDuration;
 
     // TouchEvent_ACTION_DOWN coordinates (dX, dY)
-    private float mDX, mDY;
+    private float mTouchX, mTouchY;
 
     // TouchEvent last coordinate (lastX, lastY)
-    private float mLastX;
-    private boolean mIsMoveValid;
+    private float mLastTouchX;
+    private boolean mIsDragging;
     private boolean mIsOpen;
     private boolean mIsEnable;
-    private OnStateChangeListener mListener;
+    private OnStateChangeListener mOnStateChangeListener;
 
     public SlideLayout(Context context) {
         this(context, null);
@@ -219,13 +219,14 @@ public class SlideLayout extends ViewGroup {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            if (mListener != null) {
-                mListener.closeAll(this);
+            if (mOnStateChangeListener != null) {
+                mOnStateChangeListener.closeAll(this);
             }
-            final float eX = ev.getRawX();
-            final float eY = ev.getRawY();
-            mLastX = mDX = eX;
-            mDY = eY;
+            final float x = ev.getRawX();
+            final float y = ev.getRawY();
+            mLastTouchX = mTouchX = x;
+            mTouchY = y;
+            mIsDragging = false;
             super.dispatchTouchEvent(ev);
             return true;
         }
@@ -234,11 +235,15 @@ public class SlideLayout extends ViewGroup {
 
     @Override
     public boolean onInterceptTouchEvent(MotionEvent ev) {
+        if (!mIsEnable) {
+            return super.onInterceptTouchEvent(ev);
+        }
         if (ev.getAction() == MotionEvent.ACTION_MOVE) {
-            final float eX = ev.getRawX();
-            final float eY = ev.getRawY();
+            final float x = ev.getRawX();
+            final float y = ev.getRawY();
             // Intercept child event when horizontal ACTION_MOVE value is greater than TouchSlop
-            if (Math.abs(eX - mDX) > mTouchSlop && Math.abs(eX - mDX) > Math.abs(eY - mDY)) {
+            if (Math.abs(x - mTouchX) > mTouchSlop
+                    && Math.abs(x - mTouchX) > Math.abs(y - mTouchY)) {
                 return true;
             }
         }
@@ -250,41 +255,46 @@ public class SlideLayout extends ViewGroup {
         if (!mIsEnable) {
             return super.onTouchEvent(event);
         }
-        final float eX = event.getRawX();
-        final float eY = event.getRawY();
+
+        final float x = event.getRawX();
+        final float y = event.getRawY();
         switch (event.getAction()) {
             case MotionEvent.ACTION_MOVE:
-                if (!mIsMoveValid && Math.abs(eX - mDX) > mTouchSlop && Math.abs(eX - mDX) > Math.abs(eY - mDY)) {
+                if (!mIsDragging
+                        && Math.abs(x - mTouchX) > mTouchSlop
+                        && Math.abs(x - mTouchX) > Math.abs(y - mTouchY)) {
                     // Disable parent view interception events
                     requestDisallowInterceptTouchEvent(true);
-                    mIsMoveValid = true;
+                    mIsDragging = true;
+                    mLastTouchX = x;
+                    return super.onTouchEvent(event);
                 }
-                if (mIsMoveValid) {
-                    int offset = (int) (mLastX - eX);
-                    mLastX = eX;
+                if (mIsDragging) {
+                    final int offset = (int) (mLastTouchX - x);
                     if (getScrollX() + offset < 0) {
                         toggle(false, false);
-                        mDX = eX; // Reset eX
+                        mTouchX = x; // Reset touch x
                     } else if (getScrollX() + offset > mRightBorder - mWidth) {
                         toggle(true, false);
-                        mDX = eX; // Reset eX
+                        mTouchX = x; // Reset touch x
                     } else {
                         scrollBy(offset, 0);
                     }
+                    mLastTouchX = x;
                     return true;
                 }
                 break;
+
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                if (mIsMoveValid) {
-                    if (eX - mDX < -mSlideSlop) {
+                if (mIsDragging) {
+                    if (x - mTouchX < -mSlideSlop) {
                         toggle(true, true);
-                    } else if (eX - mDX > mSlideSlop) {
+                    } else if (x - mTouchX > mSlideSlop) {
                         toggle(false, true);
                     } else {
                         toggle(mIsOpen, true);
                     }
-                    mIsMoveValid = false;
                     event.setAction(MotionEvent.ACTION_CANCEL);
                     super.onTouchEvent(event);
                     return true;
@@ -295,8 +305,8 @@ public class SlideLayout extends ViewGroup {
     }
 
     private void toggle(boolean open, boolean withAnim) {
-        if (mIsOpen != open && mListener != null) {
-            mListener.onChange(this, open);
+        if (mIsOpen != open && mOnStateChangeListener != null) {
+            mOnStateChangeListener.onChange(this, open);
         }
         mIsOpen = open;
         if (mIsOpen) {
@@ -372,7 +382,7 @@ public class SlideLayout extends ViewGroup {
     }
 
     public void setOnStateChangeListener(OnStateChangeListener listener) {
-        this.mListener = listener;
+        this.mOnStateChangeListener = listener;
     }
 
     public static class LayoutParams extends MarginLayoutParams {
