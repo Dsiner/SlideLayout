@@ -16,12 +16,12 @@ Maven:
 <dependency>
   <groupId>com.dsiner.lib</groupId>
   <artifactId>slidelayout</artifactId>
-  <version>1.0.3</version>
+  <version>1.0.4</version>
 </dependency>
 ```
 or Gradle:
 ```groovy
-compile 'com.dsiner.lib:slidelayout:1.0.3'
+compile 'com.dsiner.lib:slidelayout:1.0.4'
 ```
 
 ## How do I use it?
