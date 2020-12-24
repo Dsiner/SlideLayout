@@ -47,12 +47,13 @@ compile 'com.dsiner.lib:slidelayout:1.0.3'
 
 ### Operation ###
 ```java
+        boolean isEnable();
+        void setEnable(Boolean isEnable);
+
+        boolean isOpen();
         void open();
         void close();
         void setOpen(boolean open, boolean withAnim);
-        boolean isOpen();
-        void setEnable(Boolean isEnable)
-        boolean isEnable()
 ```
 
 ### State change callback ###
@@ -60,14 +61,15 @@ Just implement `SlideLayout.OnStateChangeListener`:
 
 ```java
         .setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {
+
             @Override
-            public void onChange(SlideLayout layout, boolean isOpen) {
-                ...
+            public boolean onInterceptTouchEvent(SlideLayout layout) {
+                return false;
             }
 
             @Override
-            public boolean closeAll(SlideLayout layout) {
-                return false;
+            public void onStateChanged(SlideLayout layout, boolean open) {
+                ...
             }
         });
 ```
@@ -75,9 +77,10 @@ Just implement `SlideLayout.OnStateChangeListener`:
 ### Parameter ###
 | Attrs        | Type           | Function  |
 | ------------- |:-------------:| -----:|
-| sl_slideSlop      | Dimension | Slop |
-| sl_duration      | Integer      |   Duration |
-| sl_enable      | Boolean      |   Enable |
+| sl_enable      | Boolean      | Enable   |
+| sl_slideSlop   | Dimension    | Slop     |
+| sl_duration    | Integer      | Duration |
+
 
 More usage see [Demo](app/src/main/java/com/d/slidelayout/MainActivity.java)
 

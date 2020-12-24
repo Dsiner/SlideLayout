@@ -1,6 +1,11 @@
 Changelog
 --------------------------------
 
+Version: 1.0.4
+--------------------------------
+- TouchEvent interception
+- Sliding smoothly
+
 Version: 1.0.3
 --------------------------------
 - Fix issues #4

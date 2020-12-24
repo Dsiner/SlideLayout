@@ -7,9 +7,9 @@ import android.widget.Toast;
 import com.d.lib.pulllayout.rv.adapter.CommonAdapter;
 import com.d.lib.pulllayout.rv.adapter.CommonHolder;
 import com.d.lib.slidelayout.SlideLayout;
-import com.d.lib.slidelayout.SlideManager;
 import com.d.slidelayout.R;
 import com.d.slidelayout.bean.Bean;
+import com.d.slidelayout.util.SlideHelper;
 
 import java.util.List;
 
@@ -18,11 +18,10 @@ import java.util.List;
  * Created by D on 2017/5/6.
  */
 public class SlideListAdapter extends CommonAdapter<Bean> {
-    private final SlideManager mSlideManager;
+    private final SlideHelper mSlideHelper = new SlideHelper();
 
     public SlideListAdapter(Context context, List<Bean> datas, int layoutId) {
         super(context, datas, layoutId);
-        mSlideManager = new SlideManager();
     }
 
     @Override
@@ -32,14 +31,15 @@ public class SlideListAdapter extends CommonAdapter<Bean> {
         sl_slide.setOpen(item.isOpen, false);
         sl_slide.setOnStateChangeListener(new SlideLayout.OnStateChangeListener() {
             @Override
-            public void onChange(SlideLayout layout, boolean isOpen) {
-                item.isOpen = isOpen;
-                mSlideManager.onChange(layout, isOpen);
+            public boolean onInterceptTouchEvent(SlideLayout layout) {
+                boolean result = mSlideHelper.closeAll(layout);
+                return false;
             }
 
             @Override
-            public boolean closeAll(SlideLayout layout) {
-                return mSlideManager.closeAll(layout);
+            public void onStateChanged(SlideLayout layout, boolean open) {
+                item.isOpen = open;
+                mSlideHelper.onStateChanged(layout, open);
             }
         });
         holder.setOnClickListener(R.id.tv_stick, new View.OnClickListener() {

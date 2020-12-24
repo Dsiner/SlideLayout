@@ -30,10 +30,10 @@ public class SlideLayout extends ViewGroup {
     private int mSlideSlop;
     private int mDuration;
 
-    // TouchEvent_ACTION_DOWN coordinates (dX, dY)
+    // TouchEvent_ACTION_DOWN coordinates (x, y)
     private float mTouchX, mTouchY;
 
-    // TouchEvent last coordinate (lastX, lastY)
+    // TouchEvent last coordinate (x, y)
     private float mLastTouchX;
     private boolean mIsDragging;
     private boolean mIsOpen;
@@ -67,7 +67,6 @@ public class SlideLayout extends ViewGroup {
         mScroller = new Scroller(context);
         mTouchSlop = ViewConfiguration.get(getContext()).getScaledTouchSlop();
     }
-
 
     @Override
     public ViewGroup.LayoutParams generateLayoutParams(AttributeSet attrs) {
@@ -219,9 +218,12 @@ public class SlideLayout extends ViewGroup {
     @Override
     public boolean dispatchTouchEvent(MotionEvent ev) {
         if (ev.getAction() == MotionEvent.ACTION_DOWN) {
-            if (mOnStateChangeListener != null) {
-                mOnStateChangeListener.closeAll(this);
+            final boolean intercepted = mOnStateChangeListener != null
+                    && mOnStateChangeListener.onInterceptTouchEvent(this);
+            if (intercepted) {
+                return false;
             }
+
             final float x = ev.getRawX();
             final float y = ev.getRawY();
             mLastTouchX = mTouchX = x;
@@ -272,10 +274,10 @@ public class SlideLayout extends ViewGroup {
                 if (mIsDragging) {
                     final int offset = (int) (mLastTouchX - x);
                     if (getScrollX() + offset < 0) {
-                        toggle(false, false);
+                        setOpen(false, false);
                         mTouchX = x; // Reset touch x
                     } else if (getScrollX() + offset > mRightBorder - mWidth) {
-                        toggle(true, false);
+                        setOpen(true, false);
                         mTouchX = x; // Reset touch x
                     } else {
                         scrollBy(offset, 0);
@@ -289,11 +291,11 @@ public class SlideLayout extends ViewGroup {
             case MotionEvent.ACTION_CANCEL:
                 if (mIsDragging) {
                     if (x - mTouchX < -mSlideSlop) {
-                        toggle(true, true);
+                        setOpen(true, true);
                     } else if (x - mTouchX > mSlideSlop) {
-                        toggle(false, true);
+                        setOpen(false, true);
                     } else {
-                        toggle(mIsOpen, true);
+                        setOpen(mIsOpen, true);
                     }
                     event.setAction(MotionEvent.ACTION_CANCEL);
                     super.onTouchEvent(event);
@@ -302,26 +304,6 @@ public class SlideLayout extends ViewGroup {
                 break;
         }
         return super.onTouchEvent(event);
-    }
-
-    private void toggle(boolean open, boolean withAnim) {
-        if (mIsOpen != open && mOnStateChangeListener != null) {
-            mOnStateChangeListener.onChange(this, open);
-        }
-        mIsOpen = open;
-        if (mIsOpen) {
-            if (withAnim) {
-                smoothScrollTo(mRightBorder - mWidth, mDuration);
-            } else {
-                scrollTo(mRightBorder - mWidth, 0);
-            }
-        } else {
-            if (withAnim) {
-                smoothScrollTo(0, mDuration);
-            } else {
-                scrollTo(0, 0);
-            }
-        }
     }
 
     private void smoothScrollTo(int dstX, int duration) {
@@ -338,51 +320,62 @@ public class SlideLayout extends ViewGroup {
         }
     }
 
-    public void setEnable(Boolean isEnable) {
-        this.mIsEnable = isEnable;
-    }
-
     public boolean isEnable() {
         return mIsEnable;
+    }
+
+    public void setEnable(boolean enable) {
+        this.mIsEnable = enable;
     }
 
     public boolean isOpen() {
         return mIsOpen;
     }
 
-    /**
-     * Open or close
-     *
-     * @param open     Open or close
-     * @param withAnim Whether animation
-     */
-    public void setOpen(boolean open, boolean withAnim) {
-        toggle(open, withAnim);
-    }
-
     public void open() {
-        toggle(true, true);
+        setOpen(true, true);
     }
 
     public void close() {
-        toggle(false, true);
+        setOpen(false, true);
     }
 
-    public interface OnStateChangeListener {
-
-        void onChange(SlideLayout layout, boolean isOpen);
-
-        /**
-         * Close all slides that are not closed
-         *
-         * @param layout This layout
-         * @return True if there is a slide that is not closed; False if there is no slide that is not closed
-         */
-        boolean closeAll(SlideLayout layout);
+    /**
+     * Set on or off status
+     *
+     * @param open     Open or close
+     * @param withAnim Whether with animation effect
+     */
+    public void setOpen(boolean open, boolean withAnim) {
+        if (mIsOpen != open && mOnStateChangeListener != null) {
+            mOnStateChangeListener.onStateChanged(this, open);
+        }
+        mIsOpen = open;
+        int x = mIsOpen ? mRightBorder - mWidth : 0;
+        int y = 0;
+        if (withAnim) {
+            smoothScrollTo(x, mDuration);
+        } else {
+            scrollTo(x, y);
+        }
     }
 
     public void setOnStateChangeListener(OnStateChangeListener listener) {
         this.mOnStateChangeListener = listener;
+    }
+
+    public abstract static class OnStateChangeListener {
+
+        /**
+         * Implement this method to intercept all touch screen motion events.
+         *
+         * @param layout This layout
+         */
+        public boolean onInterceptTouchEvent(SlideLayout layout) {
+            return false;
+        }
+
+        public abstract void onStateChanged(SlideLayout layout, boolean open);
     }
 
     public static class LayoutParams extends MarginLayoutParams {

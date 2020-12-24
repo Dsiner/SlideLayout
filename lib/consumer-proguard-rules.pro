@@ -1,2 +1,2 @@
 -keep class com.d.lib.slidelayout.SlideLayout{*;}
--keep class com.d.lib.slidelayout.SlideManager{*;}
+-keep class com.d.slidelayout.util.SlideHelper{*;}

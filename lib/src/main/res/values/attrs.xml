@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="SlideLayout">
+        <attr name="sl_enable" format="boolean" />
         <attr name="sl_slideSlop" format="dimension" />
         <attr name="sl_duration" format="integer" />
-        <attr name="sl_enable" format="boolean" />
     </declare-styleable>
 </resources>

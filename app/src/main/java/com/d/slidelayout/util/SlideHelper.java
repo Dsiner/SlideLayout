@@ -1,20 +1,22 @@
-package com.d.lib.slidelayout;
+package com.d.slidelayout.util;
+
+import com.d.lib.slidelayout.SlideLayout;
 
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Manager for Slide List
+ * Help manage the slide
  * Created by D on 2017/5/30.
  */
-public class SlideManager {
+public class SlideHelper {
     private final List<SlideLayout> mSlides = new ArrayList<>();
 
-    public SlideManager() {
+    public SlideHelper() {
     }
 
-    public void onChange(SlideLayout layout, boolean isOpen) {
-        if (isOpen) {
+    public void onStateChanged(SlideLayout layout, boolean open) {
+        if (open) {
             mSlides.add(layout);
         } else {
             mSlides.remove(layout);
@@ -22,19 +24,19 @@ public class SlideManager {
     }
 
     public boolean closeAll(SlideLayout layout) {
-        boolean ret = false;
         if (mSlides.size() <= 0) {
             return false;
         }
+        boolean result = false;
         for (int i = 0; i < mSlides.size(); i++) {
             SlideLayout slide = mSlides.get(i);
             if (slide != null && slide != layout) {
                 slide.close();
                 mSlides.remove(slide); // Unnecessary
-                ret = true;
+                result = true;
                 i--;
             }
         }
-        return ret;
+        return result;
     }
 }
