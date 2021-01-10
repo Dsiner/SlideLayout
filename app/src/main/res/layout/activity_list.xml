@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/lib_pub_color_bg_main">
 
-    <com.d.lib.common.view.TitleLayout
+    <com.d.lib.common.widget.TitleLayout
         android:id="@+id/tl_title"
         style="@style/lib_pub_title_style"
         app:lib_pub_tl_middleText="List" />

@@ -29,5 +29,5 @@ dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     implementation project(':lib')
 
-    implementation 'com.dsiner.lib:common:1.1.1'
+    implementation 'com.dsiner.lib:common:1.2.1'
 }
